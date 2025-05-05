@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuis PJOK</title>
@@ -21,7 +21,7 @@
             margin-right: 5px;
         }
         #hasil {
-            margin-top: 20px;
+            margin-bottom: 20px; /* Ubah margin-top menjadi margin-bottom */
             font-weight: bold;
         }
         button {
@@ -34,8 +34,7 @@
     <h1>Kuis PJOK</h1>
     <div id="kuis-container">
     </div>
-    <button onclick="hitungNilai()">Selesai dan Hitung Nilai</button>
-    <div id="hasil"></div>
+    <div id="hasil"></div> <button onclick="hitungNilai()">Selesai dan Hitung Nilai</button>
 
     <script>
         const daftarSoalPjok = [
@@ -96,7 +95,8 @@
                     b: 'Melatih koordinasi gerakan dalam menguasai dan mengoper bola',
                     c: 'Memperkuat otot-otot kaki',
                     d: 'Memperindah gerakan dalam bermain sepak bola'
-                }
+                },
+                jawaban: 'b'
             },
             {
                 pertanyaan: 'Gerakan menendang bola ke arah gawang menggunakan kaki bagian dalam setelah melakukan gerakan menggiring bola termasuk variasi dan kombinasi gerak dasar ....',
