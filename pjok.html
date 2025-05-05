@@ -1,1 +1,420 @@
-jajal sinau
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis PJOK</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .soal {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .pilihan {
+            margin-left: 20px;
+        }
+        .pilihan input[type="radio"] {
+            margin-right: 5px;
+        }
+        #hasil {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kuis PJOK</h1>
+    <div id="kuis-container">
+    </div>
+    <button onclick="hitungNilai()">Selesai dan Hitung Nilai</button>
+    <div id="hasil"></div>
+
+    <script>
+        const daftarSoalPjok = [
+            {
+                pertanyaan: 'Berikut adalah ciri-ciri variasi gerak dasar dalam sepak bola: bergerak maju mundur, sesekali mengubah arah dengan cepat, dan menggunakan kaki bagian dalam untuk mengontrol bola. Jenis variasi gerak dasar yang sesuai dengan ciri-ciri tersebut adalah ....',
+                pilihan: {
+                    a: 'Menendang dan mengumpan',
+                    b: 'Menggiring bola dan merebut bola',
+                    c: 'Berlari dan mengontrol bola',
+                    d: 'Melompat dan menyundul bola'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Seorang pemain kasti berlari menuju base setelah memukul bola, lalu berhenti untuk bersiap melempar bola ke arah pemukul selanjutnya. Deskripsi ini menunjukkan variasi gerak dasar ....',
+                pilihan: {
+                    a: 'Berlari dan melompat',
+                    b: 'Memukul dan menangkap',
+                    c: 'Berlari dan melempar',
+                    d: 'Melempar dan mengayun'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar seorang pemain bola voli sedang melakukan *passing bawah*]. Gambar tersebut menunjukkan salah satu teknik dasar dalam permainan bola voli, yaitu ....',
+                pilihan: {
+                    a: 'Servis',
+                    b: 'Passing',
+                    c: 'Smash',
+                    d: 'Block'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar rangkaian gerakan *servis atas* dalam bola voli]. Gambar tersebut menunjukkan rangkaian gerak teknik dasar servis atas. Urutan gerakan yang benar setelah melambungkan bola adalah ....',
+                pilihan: {
+                    a: 'Menekuk lutut - memukul bola dengan telapak tangan - mendarat',
+                    b: 'Melompat - memukul bola dengan telapak tangan - mendarat',
+                    c: 'Mengayunkan lengan ke belakang - memukul bola dengan telapak tangan di atas kepala - mendarat',
+                    d: 'Mendorong bola dengan jari-jari - mengarahkan bola ke net - mendarat'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Dalam permainan sepak bola, variasi gerak dasar lokomotor seperti berlari zig-zag bertujuan untuk ....',
+                pilihan: {
+                    a: 'Meningkatkan kekuatan tendangan',
+                    b: 'Melatih kelincahan dan mengecoh lawan',
+                    c: 'Mempercepat laju bola',
+                    d: 'Menjaga keseimbangan tubuh'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: 'Seorang pemain sepak bola berlari mengejar bola (lokomotor), menghentikan bola dengan dada (non-lokomotor), dan kemudian menendang bola ke arah temannya (manipulatif). Tujuan utama dari variasi dan kombinasi gerak dasar ini adalah ....',
+                pilihan: {
+                    a: 'Meningkatkan kecepatan berlari pemain',
+                    b: 'Melatih koordinasi gerakan dalam menguasai dan mengoper bola',
+                    c: 'Memperkuat otot-otot kaki',
+                    d: 'Memperindah gerakan dalam bermain sepak bola'
+                }
+            },
+            {
+                pertanyaan: 'Gerakan menendang bola ke arah gawang menggunakan kaki bagian dalam setelah melakukan gerakan menggiring bola termasuk variasi dan kombinasi gerak dasar ....',
+                pilihan: {
+                    a: 'Lokomotor dan non-lokomotor',
+                    b: 'Non-lokomotor dan manipulatif',
+                    c: 'Lokomotor dan manipulatif',
+                    d: 'Manipulatif dan keseimbangan'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Dalam permainan kasti, tujuan utama dari variasi dan kombinasi gerak dasar berlari, melempar bola melambung, dan menangkap bola adalah untuk ....',
+                pilihan: {
+                    a: 'Meningkatkan kekuatan lemparan',
+                    b: 'Melatih ketepatan lemparan dan kecepatan lari',
+                    c: 'Memperkuat otot lengan dan kaki',
+                    d: 'Meningkatkan daya tahan tubuh'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: 'Dalam permainan kasti, tujuan lain dari variasi dan kombinasi gerak dasar lokomotor, non-lokomotor, dan manipulatif adalah ....',
+                pilihan: {
+                    a: 'Memperlambat jalannya permainan',
+                    b: 'Meningkatkan kesulitan bagi tim lawan',
+                    c: 'Melatih semua aspek fisik pemain secara terpadu',
+                    d: 'Memamerkan keterampilan individu pemain'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Seorang pemain kasti berlari (lokomotor) untuk mendekati bola, kemudian memutar badan (non-lokomotor) untuk melempar bola dengan ayunan samping (manipulatif). Rangkaian gerak ini bertujuan untuk ....',
+                pilihan: {
+                    a: 'Melempar bola dengan sangat cepat',
+                    b: 'Melempar bola dengan arah yang sulit ditebak',
+                    c: 'Menghemat tenaga saat melempar',
+                    d: 'Meningkatkan akurasi dan kekuatan lemparan'
+                },
+                jawaban: 'd'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar rangkaian gerakan lompat jauh (awalan lari, tolakan, melayang, mendarat)]. Gambar tersebut menunjukkan rangkaian gerakan lompat jauh. Tahap gerakan melayang di udara bertujuan untuk ....',
+                pilihan: {
+                    a: 'Mendapatkan kecepatan maksimal',
+                    b: 'Menambah ketinggian saat melompat',
+                    c: 'Mempertahankan keseimbangan dan memperpanjang jarak lompatan',
+                    d: 'Mempersiapkan pendaratan yang aman'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Contoh gerakan variasi jalan, lari, dan lompat dalam aktivitas berlari melewati rintangan adalah ....',
+                pilihan: {
+                    a: 'Jalan cepat, lari sprint, dan melompat tinggi',
+                    b: 'Lari pelan, melompati rintangan dengan satu kaki, dan mendarat dengan dua kaki',
+                    c: 'Jalan santai, lari zig-zag, dan melompat jauh',
+                    d: 'Lari dengan mengubah kecepatan, melompati rintangan dengan ayunan kaki, dan mendarat'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: 'Kombinasi gerak dasar lari dan lompat dalam loncat kangkang bertujuan untuk melewati rintangan dengan cara ....',
+                pilihan: {
+                    a: 'Melompat setinggi mungkin',
+                    b: 'Mengayunkan kedua kaki ke depan saat melompat',
+                    c: 'Melebarkan kedua kaki ke samping saat melayang',
+                    d: 'Mendarat dengan tumpuan satu kaki'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Dalam permainan Gobak Sodor, variasi dan kombinasi gerak dasar jalan, lari, lompat, dan lempar sering digunakan untuk ....',
+                pilihan: {
+                    a: 'Mempertahankan wilayah permainan',
+                    b: 'Mengejar dan menghindari lawan agar tidak tersentuh',
+                    c: 'Mengumpulkan poin sebanyak-banyaknya',
+                    d: 'Melatih kekuatan fisik pemain'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: 'Variasi dan kombinasi gerak dasar yang dominan dalam permainan Lompat Tali adalah ....',
+                pilihan: {
+                    a: 'Jalan di tempat dan melompat dengan satu kaki',
+                    b: 'Lari mengelilingi tali dan melompat secara bergantian',
+                    c: 'Melompat dengan berbagai pola ayunan tali dan ketinggian',
+                    d: 'Melempar tali ke atas dan melompatinya'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Dalam bela diri, gerakan berpindah tempat ke samping dan bergerak maju mundur untuk menjaga jarak dengan lawan termasuk gerak dasar ....',
+                pilihan: {
+                    a: 'Pukulan dan tendangan',
+                    b: 'Tangkisan dan hindaran',
+                    c: 'Lokomotor dan non-lokomotor',
+                    d: 'Manipulatif dan keseimbangan'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Posisi dasar dalam bela diri dengan kedua kaki dibuka lebar sejajar, lutut ditekuk, dan berat badan seimbang di tengah disebut gerakan ....',
+                pilihan: {
+                    a: 'Kuda-kuda depan',
+                    b: 'Kuda-kuda belakang',
+                    c: 'Kuda-kuda tengah',
+                    d: 'Sikap pasang'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Dalam bela diri, gerakan memukul ke arah ulu hati (variasi pukulan) yang diikuti dengan menendang ke arah perut (kombinasi tendangan) bertujuan untuk ....',
+                pilihan: {
+                    a: 'Meningkatkan kecepatan gerakan',
+                    b: 'Mengejutkan dan melumpuhkan lawan',
+                    c: 'Melatih kelenturan tubuh',
+                    d: 'Memperkuat otot lengan dan kaki secara terpisah'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar seseorang sedang melakukan gerakan *squat*]. Gambar tersebut menunjukkan salah satu bentuk aktivitas kebugaran jasmani untuk melatih ....',
+                pilihan: {
+                    a: 'Kelincahan',
+                    b: 'Kekuatan otot tungkai dan bokong',
+                    c: 'Keseimbangan',
+                    d: 'Koordinasi'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: 'Deskripsi berikut: aktivitas fisik yang dilakukan secara berulang dalam waktu yang lama dan meningkatkan kemampuan jantung, paru-paru, serta peredaran darah dalam menyalurkan oksigen ke seluruh tubuh. Manfaat utama dari latihan kebugaran ini adalah ....',
+                pilihan: {
+                    a: 'Meningkatkan kekuatan otot secara maksimal',
+                    b: 'Meningkatkan daya tahan kardiovaskular',
+                    c: 'Meningkatkan kelenturan sendi secara signifikan',
+                    d: 'Meningkatkan kecepatan reaksi dan kelincahan'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar rangkaian gerakan *jongkok - tangan menumpu - mengguling* dalam roll depan]. Gambar tersebut menunjukkan tahapan awal dari rangkaian gerak ....',
+                pilihan: {
+                    a: 'Roll belakang',
+                    b: 'Guling lenting',
+                    c: 'Kayang',
+                    d: 'Roll depan'
+                },
+                jawaban: 'd'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar urutan gerakan roll depan yang tidak berurutan]. Urutan rangkaian gerakan roll depan yang benar adalah ....',
+                pilihan: {
+                    a: 'Berdiri - jongkok - tangan menumpu - mengguling - kembali berdiri',
+                    b: 'Jongkok - tangan menumpu - mengguling - kembali jongkok - berdiri',
+                    c: 'Berdiri - tangan menumpu - mengguling - jongkok - berdiri',
+                    d: 'Mengguling - jongkok - tangan menumpu - berdiri'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar gerakan langkah kaki ke samping diikuti ayunan lengan ke atas dan bawah dalam senam irama]. Gambar tersebut menunjukkan variasi dan kombinasi gerakan langkah dan ayunan lengan dalam senam irama, yaitu ....',
+                pilihan: {
+                    a: 'Langkah depan dan ayunan satu lengan ke depan',
+                    b: 'Langkah samping dan ayunan kedua lengan ke atas dan bawah',
+                    c: 'Langkah silang dan ayunan lengan melingkar',
+                    d: 'Langkah belakang dan ayunan kedua lengan ke samping'
+                },
+                jawaban: 'b'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan gambar rangkaian gerakan ayunan lengan ke samping kanan dan kiri secara bergantian dalam senam irama]. Gambar tersebut menunjukkan rangkaian gerakan ayunan lengan dalam senam irama, yaitu ....',
+                pilihan: {
+                    a: 'Ayunan kedua lengan ke depan dan belakang',
+                    b: 'Ayunan satu lengan ke atas dan satu lengan ke bawah',
+                    c: 'Ayunan kedua lengan ke samping kanan dan kiri secara bergantian',
+                    d: 'Ayunan kedua lengan memutar di atas kepala'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan sebuah tabel yang berisi daftar penyakit, beberapa di antaranya adalah diabetes, hipertensi, dan asma]. Berdasarkan tabel tersebut, jenis penyakit tidak menular adalah ....',
+                pilihan: {
+                    a: 'Influenza',
+                    b: 'Demam tifoid',
+                    c: 'Diabetes',
+                    d: 'Campak'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: '[**Catatan:** Anda perlu menyediakan sebuah tabel yang berisi daftar penyakit, beberapa di antaranya adalah TBC, COVID-19, dan diare]. Berdasarkan tabel tersebut, jenis penyakit menular adalah ....',
+                pilihan: {
+                    a: 'Jantung koroner',
+                    b: 'Stroke',
+                    c: 'TBC (Tuberkulosis)',
+                    d: 'Asam urat'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Berikut ini yang merupakan salah satu kegiatan budaya hidup sehat adalah ....',
+                pilihan: {
+                    a: 'Tidur larut malam setiap hari',
+                    b: 'Mengkonsumsi makanan cepat saji secara berlebihan',
+                    c: 'Melakukan aktivitas fisik secara teratur',
+                    d: 'Merokok setelah makan'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Salah satu dampak negatif penggunaan rokok, minuman keras (miras), dan narkoba bagi tubuh adalah ....',
+                pilihan: {
+                    a: 'Meningkatkan kebugaran jasmani',
+                    b: 'Memperkuat sistem kekebalan tubuh',
+                    c: 'Merusak organ-organ vital tubuh',
+                    d: 'Meningkatkan kemampuan berpikir'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Deskripsi berikut: zat adiktif dalam rokok dapat menyebabkan gangguan pada sistem pernapasan, meningkatkan risiko penyakit jantung, dan menyebabkan ketergantungan. Dampak negatif ini disebabkan oleh kandungan ....',
+                pilihan: {
+                    a: 'Karbohidrat',
+                    b: 'Vitamin',
+                    c: 'Nikotin',
+                    d: 'Protein'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Salah satu cara yang tepat untuk memelihara kebersihan alat reproduksi adalah ....',
+                pilihan: {
+                    a: 'Menggunakan sabun antiseptik secara berlebihan',
+                    b: 'Mencuci alat reproduksi hanya saat mandi pagi',
+                    c: 'Mengganti pakaian dalam minimal dua kali sehari',
+                    d: 'Memakai pakaian dalam yang ketat setiap hari'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Deskripsi berikut: kurang menjaga kebersihan, penggunaan pakaian dalam yang lembap, dan berbagi handuk dengan orang lain dapat meningkatkan risiko terjadinya .... pada alat reproduksi.',
+                pilihan: {
+                    a: 'Peningkatan hormon reproduksi',
+                    b: 'Perkembangan sel-sel sehat',
+                    c: 'Infeksi bakteri atau jamur',
+                    d: 'Peningkatan produksi keringat'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Deskripsi berikut: kurangnya kebersihan diri, penggunaan toilet umum yang kotor, dan hubungan seksual yang tidak sehat dapat menjadi penyebab terjadinya .... pada alat reproduksi.',
+                pilihan: {
+                    a: 'Peningkatan kesuburan',
+                    b: 'Keseimbangan hormon',
+                    c: 'Gangguan kesehatan',
+                    d: 'Regenerasi sel'
+                },
+                jawaban: 'c'
+            },
+            {
+                pertanyaan: 'Salah satu manfaat utama menjaga kebersihan alat reproduksi adalah ....',
+                pilihan: {
+                    a: 'Meningkatkan kekuatan otot pinggul',
+                    b: 'Mencegah timbulnya berbagai penyakit dan infeksi',
+                    c: 'Mempercepat pertumbuhan tinggi badan',
+                    d: 'Meningkatkan konsentrasi belajar'
+                },
+                jawaban: 'b'
+            }
+        ];
+
+        const kuisContainer = document.getElementById('kuis-container');
+        const hasilDiv = document.getElementById('hasil');
+
+        function tampilkanSoal() {
+            daftarSoalPjok.forEach((soal, index) => {
+                const soalDiv = document.createElement('div');
+                soalDiv.classList.add('soal');
+                soalDiv.innerHTML = `<p>${index + 1}. ${soal.pertanyaan}</p>`;
+
+                const pilihanDiv = document.createElement('div');
+                pilihanDiv.classList.add('pilihan');
+
+                for (const kunci in soal.pilihan) {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `soal-${index}`;
+                    radio.value = kunci;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(`${kunci}. ${soal.pilihan[kunci]}`));
+                    pilihanDiv.appendChild(label);
+                    pilihanDiv.appendChild(document.createElement('br'));
+                }
+
+                soalDiv.appendChild(pilihanDiv);
+                kuisContainer.appendChild(soalDiv);
+            });
+        }
+
+        function hitungNilai() {
+            let nilai = 0;
+            daftarSoalPjok.forEach((soal, index) => {
+                const jawabanPengguna = document.querySelector(`input[name="soal-${index}"]:checked`);
+                if (jawabanPengguna && jawabanPengguna.value === soal.jawaban) {
+                    nilai++;
+                }
+            });
+
+            const jumlahSoal = daftarSoalPjok.length;
+            const nilaiPersen = (nilai / jumlahSoal) * 100;
+            hasilDiv.textContent = `Anda menjawab benar ${nilai} dari ${jumlahSoal} soal. Nilai Anda: ${nilaiPersen.toFixed(2)}%`;
+        }
+
+        // Panggil fungsi untuk menampilkan soal saat halaman dimuat
+        tampilkanSoal();
+    </script>
+</body>
+</html>
